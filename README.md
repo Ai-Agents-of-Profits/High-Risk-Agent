@@ -1,73 +1,67 @@
-# How to use Anthropic MCP Server with open LLMs, OpenAI or Google Gemini
+# Crypto Trading Agent with MCP Servers
 
-This repository contains a basic example of how to build an AI agent using the Model Context Protocol (MCP) with an open LLM (Meta Llama 3), OpenAI or Google Gemini, and a SQLite database. It's designed to be a simple, educational demonstration, not a production-ready framework.
+This trading agent integrates with your crypto and binance-futures MCP servers to analyze market data and execute trades on Binance Futures.
 
-OpenAI example: https://github.com/jalr4ever/Tiny-OAI-MCP-Agent
+## Features
 
+- **Market Analysis**: Uses the crypto MCP server tools to analyze market data and identify trading opportunities.
+- **Trade Execution**: Places trades on Binance Futures based on analysis.
+- **Position Management**: Monitors positions and adjusts stop-losses, takes profits, or exits positions based on changing market conditions.
+- **Risk Management**: Implements risk control policies to protect your capital.
 
 ## Setup
 
-This code sets up a simple CLI agent that can interact with a SQLite database through an MCP server. It uses the official SQLite MCP server and demonstrates:
+1. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-*   Connecting to an MCP server
-*   Loading and using tools and resources from the MCP server
-*   Converting tools into LLM-compatible function calls
-*   Interacting with an LLM using the `openai` SDK or `google-genai` SDK.
+2. **Configure your API Keys**:
+   - The Binance API keys should be in your `mcp_config.json` file
+   - Set your OpenAI API key as an environment variable:
+     ```bash
+     set OPENAI_API_KEY=your-key-here
+     ```
 
-## How to use it
+3. **Run the trading agent**:
+   ```bash
+   python crypto_trading_agent.py
+   ```
 
-*   Docker installed and running.
-*   Hugging Face account and an access token (for using the Llama 3 model).
-*   Google API key (for using the Gemini model).
+## Using the Trading Agent
 
-### Installation
+The agent accepts natural language instructions. Here are some example commands:
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/philschmid/mcp-openai-gemini-llama-example
-    cd mcp-openai-gemini-llama-example
-    ```
-2.  Install the required packages:
-    ```bash
-    pip install -r requirements.txt
-    ```
+- **Market Analysis**:
+  - "Analyze the current market conditions for BTC/USDT"
+  - "What's the technical analysis for ETH/USDT on the 1-hour timeframe?"
+  - "Show me the top 5 coins by volume today"
 
-3. Log in to Hugging Face
-    ```bash
-    huggingface-cli login --token YOUR_TOKEN
-    ```
+- **Trade Execution**:
+  - "Look for a good entry to go long on BTC/USDT with 2% risk"
+  - "Place a short position on ETH/USDT at market price with a stop-loss at $3550"
+  - "Set up a limit order to buy BTC/USDT at $60,000 with a stop at $59,000"
 
-## Examples
+- **Position Management**:
+  - "Check all my current positions"
+  - "Move my stop-loss on BTC/USDT position to breakeven"
+  - "Take partial profits (50%) on my ETH/USDT long position"
+  - "Close all positions"
 
-### Llama 3
-   
-Run the following command
+- **Order Management**:
+  - "Show all my pending orders"
+  - "Cancel my limit order for BTC/USDT"
 
-```bash
-python sqlite_llama_mcp_agent.py
-```
+## Architecture
 
-The agent will start in interactive mode. You can type in prompts to interact with the database. Type "quit", "exit" or "q" to stop the agent.
+This trading agent uses:
+- **MCPClient**: Connects to the MCP servers and provides access to their tools
+- **TradingAgent**: Coordinates between market analysis and trade execution
+- **OpenAI**: Provides the intelligence layer to interpret data and make decisions (can be replaced with other LLMs)
 
-Example conversation:
-```
-Enter your prompt (or 'quit' to exit): what tables are available?
+## Security Note
 
-Response:  The available tables are: albums, artists, customers, employees, genres, invoice_items, invoices, media_types, playlists, playlist_track, tracks
-
-Enter your prompt (or 'quit' to exit): how many artists are there
-
-Response:  There are 275 artists in the database.
-```
-
-### Gemini
-
-Run the following command
-
-```bash
-GOOGLE_API_KEY=YOUR_API_KEY python sqlite_gemini_mcp_agent.py
-```
-
-## Future plans
-
-I'm working on a toolkit to make implementing AI agents using MCP easier. Stay tuned for updates!
+This agent has access to your Binance account and can place real trades. Always:
+1. Start with small position sizes to test
+2. Monitor the agent's activities
+3. Keep your API keys secure

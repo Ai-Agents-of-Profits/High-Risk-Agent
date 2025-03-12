@@ -1,0 +1,43 @@
+{
+  "mcpServers": {
+    "crypto": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-v", "C:\\Users\\mac\\Documents\\mcp-server-ccxt-main:/app/mcp-server",
+        "crypto-mcp:latest",
+        "python",
+        "/app/mcp-server/src/server.py"
+      ],
+      "cwd": "C:\\Users\\mac\\CascadeProjects\\mcp-openai-gemini-llama-example",
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    },
+    "binance-futures": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network=host",
+        "-i",
+        "-v", "C:\\Users\\mac\\Documents\\biance-mcp:/app/binance-mcp",
+        "-e", "BINANCE_API_KEY=fvVrrgMNqeQ9BCHi0WmUi5r5Ufr4QwU0mPPas9daf5R60zumEWXQ60lgUtarCk9f",
+        "-e", "BINANCE_SECRET_KEY=8tFaGAVgSCRNTY0vdIxJulyDBXgrp4JMu1ukrznpF4hqtJ2n9d2UnolqjlXWzIPB",
+        "-e", "BINANCE_TESTNET=false",
+        "binance-futures-mcp:latest",
+        "python",
+        "/app/binance-mcp/binance-futures-mcp/server.py"
+      ],
+      "cwd": "C:\\Users\\mac\\CascadeProjects\\mcp-openai-gemini-llama-example",
+      "env": {
+        "PYTHONUNBUFFERED": "1",
+        "LOGLEVEL": "DEBUG"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

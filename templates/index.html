@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Trading Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/6134/6134504.png">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar">
+                <div class="sidebar-header">
+                    <img src="https://cdn-icons-png.flaticon.com/512/6134/6134504.png" alt="Logo" class="logo">
+                    <h3>Ai Agent of Profit</h3>
+                </div>
+                <div class="status-container">
+                    <h5>Connection Status</h5>
+                    <div class="status-item" id="crypto-status">
+                        <span class="status-name"><i class="bi bi-graph-up"></i> Crypto Analysis:</span>
+                        <span class="status-indicator">Connecting...</span>
+                    </div>
+                    <div class="status-item" id="binance-status">
+                        <span class="status-name"><i class="bi bi-currency-exchange"></i> Binance Futures:</span>
+                        <span class="status-indicator">Connecting...</span>
+                    </div>
+                    <div class="status-item" id="openai-status">
+                        <span class="status-name"><i class="bi bi-cpu"></i> OpenAI API:</span>
+                        <span class="status-indicator">Connecting...</span>
+                    </div>
+                </div>
+                <div class="tools-container">
+                    <h5>Available Tools</h5>
+                    <div class="tools-item" id="crypto-tools">
+                        <span class="tools-name"><i class="bi bi-tools"></i> Crypto Analysis Tools:</span>
+                        <span class="tools-count">Loading...</span>
+                    </div>
+                    <div class="tools-item" id="binance-tools">
+                        <span class="tools-name"><i class="bi bi-tools"></i> Binance Futures Tools:</span>
+                        <span class="tools-count">Loading...</span>
+                    </div>
+                </div>
+                <div class="suggestions">
+                    <h5>Example Prompts</h5>
+                    <div class="suggestion-item" onclick="setSuggestion('What is my current balance?')">
+                        <i class="bi bi-wallet2"></i> What is my current balance?
+                    </div>
+                    <div class="suggestion-item" onclick="setSuggestion('Show me your BTC/USDT analysis')">
+                        <i class="bi bi-activity"></i> Show me your BTC/USDT analysis
+                    </div>
+                    <div class="suggestion-item" onclick="setSuggestion('What is your technical analysis on ETH/USDT?')">
+                        <i class="bi bi-bar-chart-line"></i> What is your technical analysis on ETH/USDT?
+                    </div>
+                    <div class="suggestion-item" onclick="setSuggestion('Which cryptocurrencies have the highest volume?')">
+                        <i class="bi bi-trophy"></i> Which cryptocurrencies have the highest volume?
+                    </div>
+                    <div class="suggestion-item" onclick="setSuggestion('What does the SOL/USDT orderbook indicate?')">
+                        <i class="bi bi-book"></i> What does the SOL/USDT orderbook indicate?
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main content -->
+            <div class="col-md-9 main-content">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h4><i class="bi bi-robot"></i> Autonomous Trading Agent</h4>
+                    </div>
+                    <div class="chat-history" id="chat-history">
+                        <div class="system-message">
+                            <div class="message-content">
+                                <p>👋 Hello! I'm your autonomous Crypto Trading Agent. I'm actively monitoring markets and managing trades on Binance USDM Futures.</p>
+                                <p>You can observe my trading activities and analysis here. Feel free to request insights on my current positions, market analysis, or trading strategy. I'm continuously working to maximize returns while managing risk.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-area">
+                        <form id="prompt-form">
+                            <div class="input-group">
+                                <input type="text" id="prompt-input" class="form-control" placeholder="Request status or insights..." aria-label="Request status or insights">
+                                <button class="btn btn-primary" type="submit" id="submit-button">
+                                    <i class="bi bi-send"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
