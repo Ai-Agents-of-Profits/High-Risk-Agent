@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  crypto-mcp:
+    build:
+      context: .
+      dockerfile: crypto-mcp.Dockerfile
+    container_name: crypto-mcp
+    restart: always
+    ports:
+      - "127.0.0.1:8081:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - crypto_mcp_data:/app/data
+    networks:
+      - trading_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  
+  binance-futures-mcp:
+    build:
+      context: .
+      dockerfile: binance-futures-mcp.Dockerfile
+    container_name: binance-futures-mcp
+    restart: always
+    ports:
+      - "127.0.0.1:8082:8000"
+    environment:
+      - BINANCE_API_KEY=${BINANCE_API_KEY}
+      - BINANCE_SECRET_KEY=${BINANCE_SECRET_KEY}
+    volumes:
+      - binance_mcp_data:/app/data
+    networks:
+      - trading_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  
+  web-app:
+    build:
+      context: .
+    container_name: trading-web-app
+    restart: always
+    ports:
+      - "127.0.0.1:5000:5000"
+    depends_on:
+      crypto-mcp:
+        condition: service_healthy
+      binance-futures-mcp:
+        condition: service_healthy
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - FLASK_ENV=production
+      - FLASK_APP=app.py
+    volumes:
+      - app_data:/app/data
+      - ./mcp_config.json:/app/mcp_config.json:ro
+      - ./static:/app/static
+      - ./templates:/app/templates
+    networks:
+      - trading_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# Create a custom bridge network for container communication
+networks:
+  trading_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+# Define named volumes for persistent data storage
+volumes:
+  crypto_mcp_data:
+    driver: local
+  binance_mcp_data:
+    driver: local
+  app_data:
+    driver: local
